@@ -1,0 +1,682 @@
+/* Color Palette - Sophisticated Little Bear: Matcha, Sushi & Naps */
+:root {
+  /* Matcha greens */
+  --primary-color: #88b04b;
+  --primary-hover: #6d8f3a;
+  --matcha-light: #c8d9b5;
+  --matcha-dark: #5a7a3c;
+
+  /* Sushi colors */
+  --sushi-rice: #f5f3ed;
+  --nori-black: #2c3634;
+  --salmon-pink: #f5b7b1;
+  --wasabi-green: #9bb068;
+
+  /* Sleepy vibes */
+  --lavender-dream: #d4c5e2;
+  --cloud-gray: #e8e4df;
+  --honey-gold: #d4a574;
+
+  /* UI colors */
+  --background: #f9f7f1;
+  --card-background: #ffffff;
+  --text-primary: #2c3634;
+  --text-secondary: #6d7872;
+  --border-color: #e0dcd4;
+  --accent-color: #f5b7b1;
+  --star-color: #d4a574;
+  --shadow: 0 3px 12px rgba(44, 54, 52, 0.08);
+  --shadow-hover: 0 6px 20px rgba(44, 54, 52, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, var(--background) 0%, var(--cloud-gray) 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, var(--nori-black) 2px, var(--nori-black) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, var(--nori-black) 2px, var(--nori-black) 3px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header - Little Bear's Cozy Corner */
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 50px 30px;
+  background: linear-gradient(135deg, var(--matcha-light) 0%, var(--lavender-dream) 100%);
+  border-radius: 24px;
+  color: var(--nori-black);
+  box-shadow: var(--shadow);
+  border: 3px solid var(--sushi-rice);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-header::before {
+  content: '🐻😴';
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  font-size: 2.5rem;
+  opacity: 0.6;
+}
+
+.app-header::after {
+  content: '🍣🍵';
+  position: absolute;
+  bottom: 15px;
+  left: 30px;
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.app-header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: var(--matcha-dark);
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.8);
+  letter-spacing: -0.5px;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  color: var(--text-primary);
+  font-style: italic;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  background-color: white;
+}
+
+.search-bar input::placeholder {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1);
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filters select {
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.filters select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1);
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--wasabi-green) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(136, 176, 75, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--matcha-dark) 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+  background-color: var(--salmon-pink);
+  color: var(--nori-black);
+  border: 2px solid var(--salmon-pink);
+}
+
+.btn-secondary:hover {
+  background-color: var(--lavender-dream);
+  border-color: var(--lavender-dream);
+}
+
+.btn-text {
+  background: none;
+  color: var(--primary-color);
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.btn-text:hover {
+  background-color: rgba(255, 107, 53, 0.1);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn-icon:hover {
+  background-color: var(--border-color);
+}
+
+.btn-add-dish {
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* Restaurants Grid */
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Empty State - Sleepy Bear */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--lavender-dream) 0%, var(--sushi-rice) 100%);
+  border-radius: 24px;
+  border: 3px dashed var(--matcha-light);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+  color: var(--matcha-dark);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Restaurant Card - Bento Box Style */
+.restaurant-card {
+  background: linear-gradient(to bottom, var(--card-background) 0%, var(--sushi-rice) 100%);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  border: 2px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.restaurant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, var(--matcha-light) 0%, transparent 70%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.restaurant-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+}
+
+.restaurant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.restaurant-header h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.cuisine-type {
+  color: var(--matcha-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+  background-color: var(--matcha-light);
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.restaurant-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.restaurant-info {
+  margin-bottom: 16px;
+}
+
+.restaurant-info p {
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
+.rating-display {
+  margin-top: 12px;
+}
+
+.restaurant-notes {
+  background: linear-gradient(135deg, var(--sushi-rice) 0%, var(--lavender-dream) 100%);
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  border-left: 3px solid var(--honey-gold);
+  font-style: italic;
+}
+
+.visit-dates {
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Dishes Section - Sushi Style */
+.dishes-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px dashed var(--border-color);
+  background: linear-gradient(to bottom, transparent 0%, var(--sushi-rice) 100%);
+  border-radius: 0 0 16px 16px;
+  margin: 20px -26px -26px -26px;
+  padding: 20px 26px 26px 26px;
+}
+
+.dishes-list {
+  margin-top: 15px;
+}
+
+.dish-item {
+  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 2px solid var(--salmon-pink);
+  border-left: 4px solid var(--primary-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dish-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dish-header h4 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.dish-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.dish-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 8px 0;
+}
+
+.dish-notes {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.star.filled {
+  color: var(--star-color);
+}
+
+.star:not(:disabled):hover {
+  transform: scale(1.2);
+}
+
+.star:disabled {
+  cursor: default;
+}
+
+/* Forms - Matcha Tea House Style */
+.dish-form {
+  background: linear-gradient(135deg, var(--sushi-rice) 0%, var(--matcha-light) 100%);
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 15px;
+  border: 2px solid var(--border-color);
+}
+
+.dish-form h4 {
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.dish-form input,
+.dish-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.dish-form input:focus,
+.dish-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Visit Dates */
+.visit-dates-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.visit-dates-input input {
+  flex: 1;
+}
+
+.visit-dates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.visit-date-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--salmon-pink) 0%, var(--lavender-dream) 100%);
+  color: var(--nori-black);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  border: 2px solid var(--border-color);
+}
+
+.visit-date-tag button {
+  background: none;
+  border: none;
+  color: var(--nori-black);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.visit-date-tag button:hover {
+  opacity: 1;
+}
+
+/* Modal - Cozy Bear Popup */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(44, 54, 52, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: linear-gradient(to bottom, white 0%, var(--sushi-rice) 100%);
+  border-radius: 24px;
+  padding: 36px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 48px rgba(44, 54, 52, 0.3);
+  border: 3px solid var(--matcha-light);
+  position: relative;
+}
+
+.modal-content::before {
+  content: '🍵';
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  opacity: 0.4;
+}
+
+.restaurant-form h2 {
+  margin-bottom: 24px;
+  color: var(--matcha-dark);
+  font-size: 1.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    padding: 15px;
+  }
+
+  .app-header {
+    padding: 30px 15px;
+  }
+
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .filters {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .filters select,
+  .filters .btn {
+    width: 100%;
+  }
+
+  .restaurants-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  .visit-dates-input {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .restaurant-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .restaurant-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .star {
+    font-size: 1.2rem;
+  }
+}
