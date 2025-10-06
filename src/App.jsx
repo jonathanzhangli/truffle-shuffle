@@ -243,8 +243,9 @@ const RestaurantForm = ({ restaurant, onSave, onCancel }) => {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay" onClick={onCancel}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onCancel} type="button">×</button>
         <form className="restaurant-form" onSubmit={handleSubmit}>
           <h2>{restaurant ? 'Edit Restaurant' : 'Add New Restaurant'}</h2>
 

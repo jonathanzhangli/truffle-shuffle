@@ -597,15 +597,43 @@ body::before {
   content: '🍵';
   position: absolute;
   top: 20px;
-  right: 30px;
+  left: 30px;
   font-size: 2rem;
   opacity: 0.4;
+  pointer-events: none;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--salmon-pink);
+  border: 2px solid var(--border-color);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--nori-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: var(--lavender-dream);
+  transform: rotate(90deg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .restaurant-form h2 {
   margin-bottom: 24px;
   color: var(--matcha-dark);
   font-size: 1.8rem;
+  padding-right: 40px;
 }
 
 /* Responsive Design */
