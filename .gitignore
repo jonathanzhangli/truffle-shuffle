@@ -15,3 +15,18 @@ dist/
 *.swp
 *.swo
 *~
+
+# Environment variables
+.env
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+backend/env/
+*.egg-info/
+.pytest_cache/

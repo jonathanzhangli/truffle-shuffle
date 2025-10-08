@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import Discover from './components/Discover'
 
 // Star Rating Component
 const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
@@ -349,6 +350,7 @@ const RestaurantForm = ({ restaurant, onSave, onCancel }) => {
 
 // Main App Component
 function App() {
+  const [activeTab, setActiveTab] = useState('my-restaurants') // 'my-restaurants' or 'discover'
   const [restaurants, setRestaurants] = useState([])
   const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -451,6 +453,11 @@ function App() {
     ))
   }
 
+  const handleAddFromDiscover = (restaurant) => {
+    setRestaurants([...restaurants, restaurant])
+    setActiveTab('my-restaurants')
+  }
+
   const cuisineTypes = [...new Set(restaurants.map((r) => r.cuisineType))].filter(Boolean)
 
   return (
@@ -460,7 +467,24 @@ function App() {
         <p className="tagline">A cozy collection of sushi spots, matcha cafés & dreamy dining experiences</p>
       </header>
 
-      <div className="controls">
+      <div className="tabs">
+        <button
+          className={`tab ${activeTab === 'my-restaurants' ? 'active' : ''}`}
+          onClick={() => setActiveTab('my-restaurants')}
+        >
+          🐻 My Restaurants
+        </button>
+        <button
+          className={`tab ${activeTab === 'discover' ? 'active' : ''}`}
+          onClick={() => setActiveTab('discover')}
+        >
+          🔍 Discover
+        </button>
+      </div>
+
+      {activeTab === 'my-restaurants' && (
+        <>
+          <div className="controls">
         <div className="search-bar">
           <input
             type="text"
@@ -525,6 +549,15 @@ function App() {
             setShowForm(false)
             setEditingRestaurant(null)
           }}
+        />
+      )}
+        </>
+      )}
+
+      {activeTab === 'discover' && (
+        <Discover
+          existingRestaurants={restaurants}
+          onAddToFavorites={handleAddFromDiscover}
         />
       )}
     </div>
