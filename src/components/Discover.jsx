@@ -1,6 +1,22 @@
 import { useState, useEffect } from 'react'
 import './Discover.css'
 
+// Bay Area neighborhoods with coordinates
+const NEIGHBORHOODS = {
+  'all': { name: 'All Bay Area', lat: 37.7749, lon: -122.4194, radius: 25000 },
+  'mission': { name: 'Mission District', lat: 37.7599, lon: -122.4148, radius: 3000 },
+  'soma': { name: 'SoMa', lat: 37.7749, lon: -122.4194, radius: 3000 },
+  'hayes': { name: 'Hayes Valley', lat: 37.7749, lon: -122.4256, radius: 2000 },
+  'japantown': { name: 'Japantown', lat: 37.7853, lon: -122.4306, radius: 2000 },
+  'oakland': { name: 'Oakland', lat: 37.8044, lon: -122.2712, radius: 5000 },
+  'berkeley': { name: 'Berkeley', lat: 37.8715, lon: -122.2730, radius: 5000 },
+  'paloalto': { name: 'Palo Alto', lat: 37.4419, lon: -122.1430, radius: 5000 },
+  'sanmateo': { name: 'San Mateo', lat: 37.5630, lon: -122.3255, radius: 5000 },
+  'cupertino': { name: 'Cupertino', lat: 37.3230, lon: -122.0322, radius: 5000 },
+  'sunnyvale': { name: 'Sunnyvale', lat: 37.3688, lon: -122.0363, radius: 5000 },
+  'santaclara': { name: 'Santa Clara', lat: 37.3541, lon: -121.9552, radius: 5000 }
+}
+
 const Discover = ({ existingRestaurants, onAddToFavorites }) => {
   const [restaurants, setRestaurants] = useState([])
   const [loading, setLoading] = useState(false)
@@ -8,13 +24,21 @@ const Discover = ({ existingRestaurants, onAddToFavorites }) => {
   const [cached, setCached] = useState(false)
   const [sortBy, setSortBy] = useState('rating') // rating, distance
   const [filterCuisine, setFilterCuisine] = useState('')
+  const [selectedNeighborhood, setSelectedNeighborhood] = useState('all')
 
   const fetchRestaurants = async () => {
     setLoading(true)
     setError(null)
 
     try {
-      const response = await fetch('http://localhost:5001/api/discover')
+      const neighborhood = NEIGHBORHOODS[selectedNeighborhood]
+      const params = new URLSearchParams({
+        lat: neighborhood.lat,
+        lon: neighborhood.lon,
+        radius: neighborhood.radius
+      })
+
+      const response = await fetch(`http://localhost:5001/api/discover?${params}`)
       if (!response.ok) {
         throw new Error('Failed to fetch restaurants')
       }
@@ -42,7 +66,7 @@ const Discover = ({ existingRestaurants, onAddToFavorites }) => {
 
   useEffect(() => {
     fetchRestaurants()
-  }, [])
+  }, [selectedNeighborhood])
 
   const sortedAndFilteredRestaurants = () => {
     let filtered = [...restaurants]
@@ -97,7 +121,7 @@ const Discover = ({ existingRestaurants, onAddToFavorites }) => {
           <div className="sleeping-bear">🐻</div>
           <div className="zzz">💤 💤 💤</div>
           <p>Little bear is exploring the Bay Area...</p>
-          <p className="loading-subtext">Searching for sushi, matcha & cozy spots</p>
+          <p className="loading-subtext">Searching for sushi & matcha spots</p>
         </div>
       </div>
     )
@@ -129,7 +153,7 @@ const Discover = ({ existingRestaurants, onAddToFavorites }) => {
       <div className="discover-header">
         <div className="discover-title">
           <h2>🔍 Discover New Spots</h2>
-          <p>Recently opened Bay Area restaurants matching little bear's refined tastes</p>
+          <p>Exploring {NEIGHBORHOODS[selectedNeighborhood].name} for sushi & matcha</p>
         </div>
         {cached && (
           <div className="cache-indicator">
@@ -140,6 +164,16 @@ const Discover = ({ existingRestaurants, onAddToFavorites }) => {
 
       <div className="discover-controls">
         <div className="discover-filters">
+          <select
+            value={selectedNeighborhood}
+            onChange={(e) => setSelectedNeighborhood(e.target.value)}
+            className="discover-select"
+          >
+            {Object.entries(NEIGHBORHOODS).map(([key, value]) => (
+              <option key={key} value={key}>{value.name}</option>
+            ))}
+          </select>
+
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}

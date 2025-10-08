@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
@@ -16,24 +16,25 @@ FOURSQUARE_CLIENT_ID = os.getenv('FOURSQUARE_CLIENT_ID')
 FOURSQUARE_CLIENT_SECRET = os.getenv('FOURSQUARE_CLIENT_SECRET')
 FOURSQUARE_BASE_URL = 'https://api.foursquare.com/v2/venues/search'
 
-# Cache configuration (simple in-memory cache)
-cache = {
-    'data': None,
-    'timestamp': None,
-    'ttl': timedelta(hours=24)
-}
+# Cache configuration (location-aware in-memory cache)
+cache = {}
+cache_ttl = timedelta(hours=24)
 
-def get_cached_data():
-    """Check if we have valid cached data"""
-    if cache['data'] and cache['timestamp']:
-        if datetime.now() - cache['timestamp'] < cache['ttl']:
-            return cache['data']
+def get_cache_key(lat, lon, radius):
+    """Generate cache key from location parameters"""
+    return f"{lat}_{lon}_{radius}"
+
+def get_cached_data(cache_key):
+    """Check if we have valid cached data for this location"""
+    if cache_key in cache:
+        data, timestamp = cache[cache_key]
+        if datetime.now() - timestamp < cache_ttl:
+            return data
     return None
 
-def set_cached_data(data):
-    """Store data in cache"""
-    cache['data'] = data
-    cache['timestamp'] = datetime.now()
+def set_cached_data(cache_key, data):
+    """Store data in cache for this location"""
+    cache[cache_key] = (data, datetime.now())
 
 @app.route('/api/discover', methods=['GET'])
 def discover_restaurants():
@@ -42,15 +43,6 @@ def discover_restaurants():
     Filters for: sushi, Japanese cuisine, ramen, matcha/tea cafés, Asian fusion
     """
 
-    # Check cache first
-    cached_data = get_cached_data()
-    if cached_data:
-        return jsonify({
-            'restaurants': cached_data,
-            'cached': True,
-            'count': len(cached_data)
-        })
-
     if not FOURSQUARE_CLIENT_ID or not FOURSQUARE_CLIENT_SECRET:
         return jsonify({
             'error': 'Foursquare API credentials not configured',
@@ -58,17 +50,29 @@ def discover_restaurants():
         }), 500
 
     try:
-        # Foursquare v2 category IDs for our bear's refined tastes
-        # 4bf58dd8d48988d111941735: Japanese Restaurant
+        # Get optional location parameters from query string
+        lat = request.args.get('lat', '37.7749', type=float)
+        lon = request.args.get('lon', '-122.4194', type=float)
+        radius = request.args.get('radius', '25000', type=int)
+
+        # Check cache for this specific location
+        cache_key = get_cache_key(lat, lon, radius)
+        cached_data = get_cached_data(cache_key)
+        if cached_data:
+            return jsonify({
+                'restaurants': cached_data,
+                'cached': True,
+                'count': len(cached_data)
+            })
+
+        # Foursquare v2 category IDs - Sushi & Matcha only
         # 4bf58dd8d48988d1d2941735: Sushi Restaurant
-        # 55a59bace4b013909087cb24: Ramen Restaurant
-        # 4bf58dd8d48988d16d941735: Café
-        # 52e81612bcbc57f1066b7a0c: Bubble Tea Shop
-        categoryId = "4bf58dd8d48988d111941735,4bf58dd8d48988d1d2941735,55a59bace4b013909087cb24,4bf58dd8d48988d16d941735,52e81612bcbc57f1066b7a0c"
+        # 52e81612bcbc57f1066b7a0c: Bubble Tea Shop (matcha/boba tea)
+        categoryId = "4bf58dd8d48988d1d2941735,52e81612bcbc57f1066b7a0c"
 
         params = {
-            'll': '37.7749,-122.4194',  # San Francisco coordinates
-            'radius': 25000,  # 25km radius to cover Bay Area
+            'll': f'{lat},{lon}',  # Coordinates from request or defaults
+            'radius': radius,  # Radius from request or default
             'categoryId': categoryId,
             'limit': 50,
             'client_id': FOURSQUARE_CLIENT_ID,
@@ -98,8 +102,8 @@ def discover_restaurants():
             }
             restaurants.append(restaurant)
 
-        # Cache the results
-        set_cached_data(restaurants)
+        # Cache the results for this location
+        set_cached_data(cache_key, restaurants)
 
         return jsonify({
             'restaurants': restaurants,
@@ -223,9 +227,8 @@ def health_check():
 
 @app.route('/api/clear-cache', methods=['POST'])
 def clear_cache():
-    """Clear the cache to force fresh data fetch"""
-    cache['data'] = None
-    cache['timestamp'] = None
+    """Clear all cached data"""
+    cache.clear()
     return jsonify({'message': 'Cache cleared successfully'})
 
 if __name__ == '__main__':
