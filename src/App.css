@@ -118,6 +118,41 @@ body::before {
   font-style: italic;
 }
 
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border-color);
+}
+
+.tab {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  background-color: transparent;
+  color: var(--text-secondary);
+}
+
+.tab:hover {
+  background-color: var(--cloud-gray);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--wasabi-green) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(136, 176, 75, 0.3);
+}
+
 /* Controls */
 .controls {
   display: flex;
